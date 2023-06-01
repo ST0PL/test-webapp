@@ -81,7 +81,7 @@
     function UpdateTime(){
         setInterval(function() {
             var date  = new Date();
-            document.getElementById("timerObj").innerHTML = `${date.getHours()}:${date.getMinutes()}:${String(date.getSeconds()).padStart(2,"0")}`+ `<br>${String(date.getDate()).padStart(2,"0")}.${String(date.getMonth() + 1).padStart(2,"0")}.${date.getFullYear()}`;
+            document.getElementById("timerObj").innerHTML = `${{String(date.getHours()).padStart(2,"0")}:${{String(date.getMinutes()).padStart(2,"0")}:${String(date.getSeconds()).padStart(2,"0")}`+ `<br>${String(date.getDate()).padStart(2,"0")}.${String(date.getMonth() + 1).padStart(2,"0")}.${date.getFullYear()}`;
         }, 1000);
     }
     UpdateTime();
