@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <title>WebDialogue</title>
+    </head>
+    <body>
+        <div style="margin-left: 15%; margin-top: 5%; color: white; font-family: VCR, Helvetica, sans-serif; font-size: 70px;">
+            Echo-Dialogue
+        </div>
+        <div style="margin-left: 15%; padding-top: 10%;">
+            <textarea name="" id="1" cols="50" rows="5"></textarea><br>
+            <button onclick=SendText() style="margin-left: 250px; margin-top: 20px;">Отправить</button>
+        </div>
+    </body>
+    <style>
+       @font-face {
+        font-family: VCR;
+        src: url(fonts/better-vcr_0.ttf);
+        }        
+        button{
+            background-color: black;
+            border: 1px solid rgb(179,23,241);
+            border-radius: 5px;
+            color: white;
+            font-family: VCR;
+            width: 170px;
+            height: 50px;
+            font-size: 18px;
+        }
+        button:active{
+            background-color: rgb(179,23,241);
+        }
+        button:hover{
+            -webkit-box-shadow: 0px 0px 7px 7px rgba(179,23,241,0.21);
+            -moz-box-shadow: 0px 0px 7px 7px rgba(179,23,241,0.21);
+            box-shadow: 0px 0px 7px 7px rgba(179,23,241,0.21);
+        }
+        ::placeholder{
+            text-align: center;
+        }
+        body{
+            background-color: black;
+            justify-content: center;
+        }
+        textarea{
+            color: white;
+            font-size: 18px;
+            font-family: VCR;
+            resize: none;
+            background-color: inherit;
+            border: 1px solid rgb(179,23,241);
+            border-radius: 5px;
+        }
+        textarea:focus{
+            outline: none;
+            -webkit-box-shadow: 0px 0px 7px 7px rgba(179,23,241,0.21);
+            -moz-box-shadow: 0px 0px 7px 7px rgba(179,23,241,0.21);
+            box-shadow: 0px 0px 7px 7px rgba(179,23,241,0.21);
+        }
+    </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script>
+        function SendText(){
+            try{
+                var textArea = document.getElementById("1");
+                window.Telegram.WebApp.sendData(textArea.value);
+                textArea.value = "";
+            }
+            catch(WebAppDataInvalid) {alert("Поле не должно быть пустым.")}
+        }
+    </script>
+</html>
