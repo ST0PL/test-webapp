@@ -1,13 +1,15 @@
 <html>
     <head>
-        <title>WebDialogue</title>
+        <title>Веб-диалог</title>
     </head>
     <body>
-        <div style="margin-left: 15%; margin-top: 5%; color: white; font-family: VCR, Helvetica, sans-serif; font-size: 70px;">
-            Echo-Dialogue
+        <div id="title" style="margin-left: 25%; margin-top: 5%; color: white; font-family: VCR, Helvetica, sans-serif; font-size: 70px;">
+            Эхо-диалог
         </div>
-        <div style="margin-left: 15%; padding-top: 10%;">
-            <textarea name="" id="1" cols="50" rows="5"></textarea><br>
+        <div style="margin-left: 25%; padding-top: 10%;">
+            <input id = "1" class="inputElement" type="text" placeholder="Введите ключ"><br><br>
+            <input id="2" class="inputElement" type="text" placeholder="Введите id чата"><br><br>
+            <textarea id="3" class="inputElement" name="" id="1" cols="50" rows="5" placeholder="Введите текст сообщения"></textarea><br>
             <button onclick=SendText() style="margin-left: 250px; margin-top: 20px;">Отправить</button>
         </div>
     </body>
@@ -37,11 +39,14 @@
         ::placeholder{
             text-align: center;
         }
+        textarea::placeholder{
+            padding-top: 20px;
+        }
         body{
             background-color: black;
             justify-content: center;
         }
-        textarea{
+        .inputElement{
             color: white;
             font-size: 18px;
             font-family: VCR;
@@ -50,7 +55,7 @@
             border: 1px solid rgb(179,23,241);
             border-radius: 5px;
         }
-        textarea:focus{
+        .inputElement:focus{
             outline: none;
             -webkit-box-shadow: 0px 0px 7px 7px rgba(179,23,241,0.21);
             -moz-box-shadow: 0px 0px 7px 7px rgba(179,23,241,0.21);
@@ -59,13 +64,45 @@
     </style>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
-        function SendText(){
+        async function SendText(){
             try{
-                var textArea = document.getElementById("1");
-                window.Telegram.WebApp.sendData(textArea.value);
-                textArea.value = "";
+                var key = document.getElementById("1").value;
+                var chatId = parseInt(document.getElementById("2").value);
+                var textarea = document.getElementById("3");
+                var messageText = textarea.value;
+                if(messageText === "" || isNaN(chatId) || key === "" ) { alert("Все поля должны быть заполнены."); return;}
+                var response = await fetch("http://109.171.5.62:5240/api/sendMessage", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    AccessKey: key,
+                    Text: messageText,
+                    ChatId: chatId,
+                })});
+                var responseObject = await response.json();
+                title = document.getElementById("title");
+                if(responseObject.type == "Error"){
+                    title.innerText = "";
+                    var errorMsg = responseObject.serviceMessage === "Access denied." ? "Доступ запрещён" : responseObject.serviceMessage;
+                    for(let i = 0; i<errorMsg.length;i++){
+                        title.innerHTML+=errorMsg[i];
+                        await new Promise(resolve => {
+                            setTimeout(resolve, 100);
+                        });
+                    }
+                }
+                else{
+                    titleText = "Эхо-диалог";
+                    title.innerText = "";
+                    for(let i = 0; i<titleText.length;i++){
+                        title.innerText+=titleText[i];
+                        await new Promise(resolve => {
+                            setTimeout(resolve, 100);
+                        });
+                    }
+                }
             }
-            catch(WebAppDataInvalid) {alert("Поле не должно быть пустым.")}
+            catch(ex) {alert(ex)}
         }
     </script>
 </html>
