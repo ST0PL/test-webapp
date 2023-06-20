@@ -71,7 +71,7 @@
                 var textarea = document.getElementById("3");
                 var messageText = textarea.value;
                 if(messageText === "" || isNaN(chatId) || key === "" ) { alert("Все поля должны быть заполнены."); return;}
-                var response = await fetch("http://109.171.5.62:5240/api/sendMessage", {
+                var response = await fetch("https://109.171.5.62:5240/api/sendMessage", {
                 method: "POST",
                 headers: { "Accept": "application/json", "Content-Type": "application/json" },
                 body: JSON.stringify({
